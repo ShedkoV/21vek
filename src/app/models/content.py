@@ -1,13 +1,22 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from pydantic import BaseModel
+from datetime import date
 
 
-class Contents(Base):
-    """...."""
-    __tablename__ = "contents"
+class BaseContent(BaseModel):
+    """..."""
+    name: str
+    description: str
+    date: date
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    description = Column(String)
+
+class ContentCreate(BaseContent):
+    """..."""
+
+
+class Content(BaseContent):
+    """..."""
+    id: int
+
+    class Config:
+        """orm mode on"""
+        orm_mode = True

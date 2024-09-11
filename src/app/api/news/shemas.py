@@ -14,7 +14,7 @@ class BaseNews(BaseModel):
     )
 
 
-class CreateNewsRequest(BaseNews):
+class ContentCreateRequest(BaseNews):
     """..."""
 
 
