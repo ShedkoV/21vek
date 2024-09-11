@@ -11,3 +11,10 @@ class Contents(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
+
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+        }
