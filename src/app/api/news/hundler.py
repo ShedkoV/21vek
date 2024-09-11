@@ -1,17 +1,20 @@
-from app.api.news.shemas import CreateNewsRequest, CreateNewsResponse
+from fastapi import Depends
+
+from app.api.news.shemas import CreateNewsResponse, ContentCreateRequest
+from app.services.contens_crud import OperationService
 
 
-def get(request: CreateNewsRequest) -> CreateNewsResponse:
+def get(request: ContentCreateRequest) -> CreateNewsResponse:
     return CreateNewsResponse(
         answer='Done!'
     )
 
 
-def post(request: CreateNewsRequest) -> CreateNewsResponse:
-    answer = request.name
-    return CreateNewsResponse(
-        id=answer
-    )
+def post(
+    request: ContentCreateRequest,
+    service: OperationService = Depends()
+) -> CreateNewsResponse:
+    return service.create(creation_data=request)
 
 
 def put() -> ...:

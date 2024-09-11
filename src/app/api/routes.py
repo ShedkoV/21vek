@@ -12,6 +12,7 @@ def setup_routes(app: FastAPI) -> None:
         prefix='/news',
         tags=['News'],
     )
+
     api_router.api_route(path='/', methods=['GET'])(get_all_news)
     api_router.api_route(path='/create/', methods=['POST'], response_model=CreateNewsResponse)(create_new_news)
 

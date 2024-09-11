@@ -4,10 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class News(Base):
+class Contents(Base):
     """...."""
-    __tablename__ = "news"
+    __tablename__ = "contents"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
     description = Column(String)
