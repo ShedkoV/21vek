@@ -1,25 +1,27 @@
-import logging
+from typing import AsyncGenerator
 
-from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine('postgresql://shedko:postgres@localhost:5432/vek_news')
+engine = create_async_engine(
+    url='postgresql+asyncpg://shedko:postgres@localhost:5432/vek_news',
+    echo=True,
 
+)
 
-Session = sessionmaker(
+async_session = sessionmaker(
     engine,
-    autocommit=False,
-    autoflush=False,
+    expire_on_commit=False,
+    class_=AsyncSession,
 )
 
 
-def get_session() -> Session:
-    """get session"""
-    session = Session()
-    logging.info(f'Новая сессия подключения к БД создана.')
-    try:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
+    """Возвращает асинхронный генератор сессий.
+
+    Используется в FastAPI, где посредством инъекций зависимостей `DI`
+    позволяет захватывать соединение с БД соответствующим слоям логики.
+    """
+    async with async_session() as session:
         yield session
-    finally:
-        logging.info(f'Сессия подключения к БД закрыта.')
-        session.close()
