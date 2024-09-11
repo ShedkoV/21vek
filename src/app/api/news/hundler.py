@@ -10,7 +10,9 @@ def get(request: CreateNewsRequest) -> CreateNewsResponse:
 def post(request: CreateNewsRequest) -> CreateNewsResponse:
     answer = request.name
     return CreateNewsResponse(
-        id=answer
+        id=222,
+        name=answer,
+        description=answer,
     )
 
 
