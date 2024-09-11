@@ -16,7 +16,7 @@ def setup_routes(app: FastAPI) -> None:
     api_router.api_route(
         path='/',
         methods=['GET'],
-        response_model=ContentResponse,
+        response_model=list[ContentResponse],
     )(get_all_content)
 
     api_router.api_route(
