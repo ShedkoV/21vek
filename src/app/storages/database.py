@@ -1,8 +1,10 @@
+import logging
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-engine = create_engine("postgresql://shedko:postgres@localhost:5432/vek_news")
+engine = create_engine('postgresql://shedko:postgres@localhost:5432/vek_news')
 
 
 Session = sessionmaker(
@@ -15,7 +17,9 @@ Session = sessionmaker(
 def get_session() -> Session:
     """get session"""
     session = Session()
+    logging.info(f'Новая сессия подключения к БД создана.')
     try:
         yield session
     finally:
+        logging.info(f'Сессия подключения к БД закрыта.')
         session.close()

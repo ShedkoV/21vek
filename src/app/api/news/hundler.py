@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import Depends, HTTPException, status, Response
 
 from app.api.news.shemas import ContentCreateRequest, ContentResponse, ContentUpdate
@@ -16,6 +18,7 @@ def get_content_by_id(
 ) -> ContentResponse:
     response = service.get_item(content_id=content_id)
     if not response:
+        logging.info(f'No record in the database with id={content_id}')
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return response
