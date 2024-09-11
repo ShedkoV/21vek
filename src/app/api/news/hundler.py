@@ -6,17 +6,17 @@ from app.api.news.shemas import ContentCreateRequest, ContentResponse, ContentUp
 from app.services.contents_crud import OperationService
 
 
-def get_all_content(
+async def get_all_content(
     service: OperationService = Depends(),
 ) -> list[ContentResponse]:
-    return service.get_list_contents()
+     return await service.get_list_contents()
 
 
-def get_content_by_id(
+async def get_content_by_id(
     content_id: int,
     service: OperationService = Depends(),
 ) -> ContentResponse:
-    response = service.get_item(content_id=content_id)
+    response = await service.get_item(content_id=content_id)
     if not response:
         logging.info(f'No record in the database with id={content_id}')
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -24,14 +24,14 @@ def get_content_by_id(
     return response
 
 
-def create(
+async def create(
     request: ContentCreateRequest,
     service: OperationService = Depends()
 ) -> ContentResponse:
-    return service.create(creation_data=request)
+    return await service.create(creation_data=request)
 
 
-def update(
+async def update(
     content_id: int,
     request: ContentUpdate,
     service: OperationService = Depends(),
@@ -40,14 +40,14 @@ def update(
     if not updated_result:
         HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-    return updated_result
+    return await updated_result
 
 
-def delete(
+async def delete(
     content_id: int,
     service: OperationService = Depends(),
 ) -> Response:
-    if not service.delete(content_id=content_id):
+    if not await service.delete(content_id=content_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
