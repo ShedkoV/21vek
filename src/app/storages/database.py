@@ -18,10 +18,5 @@ async_session = sessionmaker(
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    """Возвращает асинхронный генератор сессий.
-
-    Используется в FastAPI, где посредством инъекций зависимостей `DI`
-    позволяет захватывать соединение с БД соответствующим слоям логики.
-    """
     async with async_session() as session:
         yield session
