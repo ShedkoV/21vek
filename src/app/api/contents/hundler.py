@@ -4,14 +4,17 @@ from fastapi import Depends, HTTPException, status, Response
 
 from app.api.contents.shemas import ContentCreateRequest, ContentResponse, ContentUpdate
 from app.services.contents_crud import OperationService
+from fastapi_cache.decorator import cache
 
 
+@cache(expire=60)
 async def get_all_content(
     service: OperationService = Depends(),
 ) -> list[ContentResponse]:
-     return await service.get_list_contents()
+    return await service.get_list_contents()
 
 
+@cache(expire=60)
 async def get_content_by_id(
     content_id: int,
     service: OperationService = Depends(),
