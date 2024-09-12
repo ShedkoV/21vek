@@ -1,0 +1,36 @@
+version: "1"
+
+services:
+  postgres:
+    image: bitnami/postgresql
+    environment:
+      - POSTGRES_DB=vek_news
+      - POSTGRES_USER=shedko
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+  redis:
+    image: bitnami/redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+
+  init_service:
+    image: 21vek-service
+    working_dir: '/21vek'
+    environment:
+      - PYTHONPATH=/21vek/src
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - "${PWD}/src:/21vek"
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:
