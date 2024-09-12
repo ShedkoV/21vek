@@ -1,33 +1,29 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
-class BaseNews(BaseModel):
-    """..."""
+class BaseContent(BaseModel):
+    """Base content."""
 
-    name: str = Field(
-        ...,
+    name: Optional[str] = Field(
         description='Название загаловка',
         example='Срочные новости',
     )
-    description: str = Field(
+    description: Optional[str] = Field(
         description='Контент новостей',
         example='Очень интересные новости',
     )
 
 
-class ContentCreateRequest(BaseNews):
-    """..."""
+class ContentRequest(BaseContent):
+    """Content request."""
 
 
-class ContentUpdate(BaseNews):
-    """..."""
-
-
-class ContentResponse(BaseNews):
-    """..."""
+class ContentResponse(BaseContent):
+    """Content response."""
 
     id: int = Field(
-        ...,
         description='Уникальный номер',
         example='3fa85f64-5717-4562-b3fc-2c963f66afa6',
     )

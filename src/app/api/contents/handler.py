@@ -3,7 +3,7 @@ import logging
 from fastapi import Depends, HTTPException, Response, status
 from fastapi_cache.decorator import cache
 
-from app.api.contents.schemas import ContentCreateRequest, ContentResponse, ContentUpdate
+from app.api.contents.schemas import ContentRequest, ContentResponse
 from app.services.contents_crud import OperationService
 
 service_dependency = Depends(OperationService)
@@ -32,7 +32,7 @@ async def get_content_by_id(
 
 
 async def create(
-    request: ContentCreateRequest,
+    request: ContentRequest,
     service: OperationService = service_dependency,
 ) -> ContentResponse:
     """Create new record."""
@@ -41,7 +41,7 @@ async def create(
 
 async def update(
     content_id: int,
-    request: ContentUpdate,
+    request: ContentRequest,
     service: OperationService = service_dependency,
 ) -> ContentResponse:
     """Update record by id."""
