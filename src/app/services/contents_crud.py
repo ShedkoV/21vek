@@ -1,9 +1,9 @@
 from fastapi import Depends
 
-from app.api.news.shemas import ContentCreateRequest, ContentUpdate
+from app.api.contents.shemas import ContentCreateRequest, ContentUpdate
 from app.utils.decorators.log_result import log_result
 from app.storages.database import async_session, get_session
-from app.storages.tables import Contents as table_operation
+from app.storages.tables import Content as table_operation
 from sqlalchemy import select
 
 
@@ -41,6 +41,7 @@ class OperationService:
 
             return operation
 
+    @log_result
     async def update(self, content_id: int, request: ContentUpdate) -> table_operation:
         """Обновление операции"""
         operation = await self._get(content_id)

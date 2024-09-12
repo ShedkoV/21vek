@@ -2,7 +2,7 @@ import logging
 
 from fastapi import Depends, HTTPException, status, Response
 
-from app.api.news.shemas import ContentCreateRequest, ContentResponse, ContentUpdate
+from app.api.contents.shemas import ContentCreateRequest, ContentResponse, ContentUpdate
 from app.services.contents_crud import OperationService
 
 

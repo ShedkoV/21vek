@@ -1,13 +1,13 @@
 from fastapi import FastAPI, APIRouter
 
-from app.api.news.hundler import (
+from app.api.contents.hundler import (
     get_all_content,
     get_content_by_id,
     create,
     update,
     delete,
 )
-from app.api.news.shemas import ContentResponse
+from app.api.contents.shemas import ContentResponse
 
 
 def setup_routes(app: FastAPI) -> None:

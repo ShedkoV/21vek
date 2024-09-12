@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class Contents(Base):
+class Content(Base):
     """...."""
     __tablename__ = "contents"
 
