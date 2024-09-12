@@ -2,7 +2,7 @@
 name = "21vek"
 version = "0.1.0"
 description = ""
-authors = ["shedko <v.shedko@kpedev.by>"]
+authors = ["shedko"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -14,7 +14,11 @@ pydantic = "^2.0"
 asyncpg = "^0.29.0"
 fastapi-cache2 = "^0.2.2"
 redis = "^5.0.8"
+wemake-python-styleguide = {version="^0.19.2", optional = true}
+flake8-noqa = {version = "^1.4.0", optional = true}
 
+[tool.poetry.extras]
+lint = ["wemake-python-styleguide", "flake8-noqa"]
 
 [build-system]
 requires = ["poetry-core"]

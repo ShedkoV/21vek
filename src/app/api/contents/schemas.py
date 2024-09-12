@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 class BaseNews(BaseModel):
     """..."""
+
     name: str = Field(
         ...,
         description='Название загаловка',
@@ -24,6 +25,7 @@ class ContentUpdate(BaseNews):
 
 class ContentResponse(BaseNews):
     """..."""
+
     id: int = Field(
         ...,
         description='Уникальный номер',
@@ -31,5 +33,6 @@ class ContentResponse(BaseNews):
     )
 
     class Config:  # pylint: disable=too-few-public-methods
-        """orm mode on"""
+        """Orm mode on."""
+
         from_attributes = True

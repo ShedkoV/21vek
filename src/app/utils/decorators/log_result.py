@@ -14,7 +14,8 @@ def log_result(func):
             return result
 
         if isinstance(result, list):
-            log_info = f'Function: {func.__name__}, Result: {[item.as_dict() for item in result]}'
+            log_list = [item.as_dict() for item in result]
+            log_info = f'Function: {func.__name__}, Result: {log_list}'
         elif isinstance(result, Content):
             log_info = f'Function: {func.__name__}, Result: {result.as_dict()}'
         else:
