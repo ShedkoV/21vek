@@ -1,35 +1,34 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
-class BaseNews(BaseModel):
-    """..."""
-    name: str = Field(
-        ...,
+class BaseContent(BaseModel):
+    """Base content."""
+
+    name: Optional[str] = Field(  # type: ignore[call-arg]
         description='Название загаловка',
         example='Срочные новости',
     )
-    description: str = Field(
+    description: Optional[str] = Field(  # type: ignore[call-arg]
         description='Контент новостей',
         example='Очень интересные новости',
     )
 
 
-class ContentCreateRequest(BaseNews):
-    """..."""
+class ContentRequest(BaseContent):
+    """Content request."""
 
 
-class ContentUpdate(BaseNews):
-    """..."""
+class ContentResponse(BaseContent):
+    """Content response."""
 
-
-class ContentResponse(BaseNews):
-    """..."""
-    id: int = Field(
-        ...,
+    id: int = Field(  # type: ignore[call-arg]
         description='Уникальный номер',
         example='3fa85f64-5717-4562-b3fc-2c963f66afa6',
     )
 
     class Config:  # pylint: disable=too-few-public-methods
-        """orm mode on"""
+        """Orm mode on."""
+
         from_attributes = True

@@ -1,39 +1,39 @@
-from fastapi import Depends
+import logging
+from typing import Optional
 
-from app.api.contents.shemas import ContentCreateRequest, ContentUpdate
-from app.utils.decorators.log_result import log_result
-from app.storages.database import async_session, get_session
-from app.storages.tables import Content as table_operation
+from fastapi import Depends
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
+
+from app.api.contents.schemas import ContentRequest
+from app.storages.database import async_session, get_session
+from app.storages.tables import Content as table_operation  # noqa: N813
+from app.utils.decorators.log_result import log_result
+
+default_session = Depends(get_session)
 
 
 class OperationService:
-    """Operation Service"""
+    """Operation Service."""
 
-    def __init__(self, session: async_session = Depends(get_session)) -> None:
+    def __init__(self, session: async_session = default_session) -> None:
         self.session = session
-
-    async def _get(self, content_id: int) -> table_operation:
-        """Получение операции по ID"""
-        async with self.session.begin():
-            result = await self.session.execute(select(table_operation).where(table_operation.id == content_id))
-            return result.scalar_one_or_none()
 
     @log_result
     async def get_list_contents(self) -> list[table_operation]:
-        """..."""
+        """Get all contents."""
         async with self.session.begin():
             result = await self.session.execute(select(table_operation))
             return result.scalars().all()
 
     @log_result
-    async def get_item(self, content_id: int) -> table_operation:
-        """Get operation"""
+    async def get_item(self, content_id: int) -> Optional[table_operation]:
+        """Get content."""
         return await self._get(content_id)
 
     @log_result
-    async def create(self, creation_data: ContentCreateRequest) -> table_operation:
-        """Создание операции"""
+    async def create(self, creation_data: ContentRequest) -> table_operation:
+        """Creating content."""
         async with self.session.begin():
             operation = table_operation(**creation_data.dict())
             self.session.add(operation)
@@ -42,8 +42,8 @@ class OperationService:
             return operation
 
     @log_result
-    async def update(self, content_id: int, request: ContentUpdate) -> table_operation:
-        """Обновление операции"""
+    async def update(self, content_id: int, request: ContentRequest) -> Optional[table_operation]:
+        """Updating content."""
         operation = await self._get(content_id)
         if operation:
             for field, value in request.dict().items():
@@ -53,11 +53,21 @@ class OperationService:
         return operation
 
     @log_result
-    async def delete(self, content_id: int) -> table_operation:
-        """Удаление операции"""
+    async def delete(self, content_id: int) -> Optional[table_operation]:
+        """Deleted content."""
         operation = await self._get(content_id)
         if operation:
             await self.session.delete(operation)
             await self.session.commit()
-            operation = True
-        return operation
+            return operation
+
+    async def _get(self, content_id: int) -> Optional[table_operation]:
+        """Get content by id."""
+        try:
+            async with self.session.begin():
+                result = await self.session.execute(
+                    select(table_operation).where(table_operation.id == content_id),
+                )
+                return result.scalar_one_or_none()
+        except (OSError, SQLAlchemyError) as error_msg:
+            logging.info(f'Error with Database: {error_msg}')

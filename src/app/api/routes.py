@@ -1,16 +1,11 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter, FastAPI
 
-from app.api.contents.hundler import (
-    get_all_content,
-    get_content_by_id,
-    create,
-    update,
-    delete,
-)
-from app.api.contents.shemas import ContentResponse
+from app.api.contents.handler import create, delete, get_all_content, get_content_by_id, update
+from app.api.contents.schemas import ContentResponse
 
 
 def setup_routes(app: FastAPI) -> None:
+    """Setting up routers."""
     api_router = APIRouter(prefix='/content', tags=['Content'])
 
     api_router.api_route(
