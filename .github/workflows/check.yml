@@ -31,7 +31,7 @@ jobs:
         run: poetry install
 
       - name: Run Flake8
-        run: poetry run flake8 --config=setup.cfg
+        run: flake8 --config=setup.cfg
 
       - name: Run MyPy
         run: poetry run mypy .
