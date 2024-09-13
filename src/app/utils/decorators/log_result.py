@@ -1,5 +1,5 @@
 import logging
-from typing import Callable, Any
+from typing import Any, Callable
 
 from app.storages.tables import Content
 
