@@ -1,10 +1,13 @@
+from typing import Any
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeMeta
 
-Base = declarative_base()
+Base: DeclarativeMeta = declarative_base()
 
 
-class Content(Base):
+class Content(Base):  # type: ignore[valid-type, misc]
     """Table views in database."""
 
     __tablename__ = 'contents'
@@ -13,7 +16,7 @@ class Content(Base):
     name = Column(String)
     description = Column(String)
 
-    def as_dict(self):  # noqa: D102
+    def as_dict(self) -> dict[str, Column[Any]]:  # noqa: D102
         return {
             'id': self.id,
             'name': self.name,

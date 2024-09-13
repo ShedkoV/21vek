@@ -1,10 +1,11 @@
 import logging
+from typing import Optional, Union
 
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.api.contents.schemas import ContentCreateRequest, ContentUpdate
+from app.api.contents.schemas import ContentRequest
 from app.storages.database import async_session, get_session
 from app.storages.tables import Content as table_operation  # noqa: N813
 from app.utils.decorators.log_result import log_result
@@ -26,12 +27,12 @@ class OperationService:
             return result.scalars().all()
 
     @log_result
-    async def get_item(self, content_id: int) -> table_operation:
+    async def get_item(self, content_id: int) -> Optional[table_operation]:
         """Get content."""
         return await self._get(content_id)
 
     @log_result
-    async def create(self, creation_data: ContentCreateRequest) -> table_operation:
+    async def create(self, creation_data: ContentRequest) -> table_operation:
         """Creating content."""
         async with self.session.begin():
             operation = table_operation(**creation_data.dict())
@@ -41,7 +42,7 @@ class OperationService:
             return operation
 
     @log_result
-    async def update(self, content_id: int, request: ContentUpdate) -> table_operation:
+    async def update(self, content_id: int, request: ContentRequest) -> Optional[table_operation]:
         """Updating content."""
         operation = await self._get(content_id)
         if operation:
@@ -52,16 +53,15 @@ class OperationService:
         return operation
 
     @log_result
-    async def delete(self, content_id: int) -> table_operation:
+    async def delete(self, content_id: int) -> Optional[table_operation]:
         """Deleted content."""
         operation = await self._get(content_id)
         if operation:
             await self.session.delete(operation)
             await self.session.commit()
-            operation = True
-        return operation
+            return operation
 
-    async def _get(self, content_id: int) -> table_operation:
+    async def _get(self, content_id: int) -> Optional[table_operation]:
         """Get content by id."""
         try:
             async with self.session.begin():

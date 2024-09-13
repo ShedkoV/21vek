@@ -1,13 +1,14 @@
 import logging
+from typing import Callable, Any
 
 from app.storages.tables import Content
 
 logger = logging.getLogger('app.api')
 
 
-def log_result(func):
+def log_result(func: Callable) -> Callable:
     """Декоратор для логирования результата функций."""
-    async def wrapper(*args, **kwargs):
+    async def wrapper(*args: Any, **kwargs: Any) -> Any:
         result = await func(*args, **kwargs)
         if result is None:
             logging.info(f'Function: {func.__name__}, Result: None value')
